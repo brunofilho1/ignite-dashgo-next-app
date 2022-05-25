@@ -59,6 +59,17 @@ export function Pagination() {
         >
           4
         </Button>
+        <Button
+          size="sm"
+          fontSize="xs"
+          w="4"
+          bgColor="gray.700"
+          _hover={{
+            bgColor: "gray.500",
+          }}
+        >
+          5
+        </Button>
       </Stack>
     </Stack>
   );
