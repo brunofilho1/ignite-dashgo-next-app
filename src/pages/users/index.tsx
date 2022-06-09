@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -20,18 +21,19 @@ import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
+import { useQuery } from "react-query";
 
 export default function UserList() {
+  const { data, isLoading, error } = useQuery("users", async () => {
+    const response = await fetch("http://localhost:3000/api/users");
+    const data = await response.json();
+    return data;
+  });
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
-
-  useEffect(() => {
-    fetch("http://localhost:3000/api/users")
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
 
   return (
     <Box>
@@ -59,71 +61,89 @@ export default function UserList() {
             </Link>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" w="8">
-                  <Checkbox colorScheme="pink" />
-                </Th>
-                <Th>Usuário</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
-                <Th w="8"></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td px={["4", "4", "6"]}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">Bruno Filho</Text>
-                    <Text fontWeight="normal" fontSize="sm" color="gray.300">
-                      bruno@publi.com.br
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>25 de maio de 2022</Td>}
-                <Td>
-                  <Button
-                    title="Editar"
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                  >
-                    <Icon as={RiPencilLine} fontSize="16" />
-                  </Button>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td px={["4", "4", "6"]}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">Bruno Filho</Text>
-                    <Text fontWeight="normal" fontSize="sm" color="gray.300">
-                      bruno@publi.com.br
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>25 de maio de 2022</Td>}
-                <Td>
-                  <Button
-                    title="Editar"
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                  >
-                    <Icon as={RiPencilLine} fontSize="16" />
-                  </Button>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-          <Pagination />
+          {isLoading ? (
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            <Flex justify="center">Falha ao obter dados dos usuários!</Flex>
+          ) : (
+            <>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={["4", "4", "6"]} color="gray.300" w="8">
+                      <Checkbox colorScheme="pink" />
+                    </Th>
+                    <Th>Usuário</Th>
+                    {isWideVersion && <Th>Data de cadastro</Th>}
+                    <Th w="8"></Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td px={["4", "4", "6"]}>
+                      <Checkbox colorScheme="pink" />
+                    </Td>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Bruno Filho</Text>
+                        <Text
+                          fontWeight="normal"
+                          fontSize="sm"
+                          color="gray.300"
+                        >
+                          bruno@publi.com.br
+                        </Text>
+                      </Box>
+                    </Td>
+                    {isWideVersion && <Td>25 de maio de 2022</Td>}
+                    <Td>
+                      <Button
+                        title="Editar"
+                        as="a"
+                        size="sm"
+                        fontSize="sm"
+                        colorScheme="purple"
+                      >
+                        <Icon as={RiPencilLine} fontSize="16" />
+                      </Button>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td px={["4", "4", "6"]}>
+                      <Checkbox colorScheme="pink" />
+                    </Td>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Bruno Filho</Text>
+                        <Text
+                          fontWeight="normal"
+                          fontSize="sm"
+                          color="gray.300"
+                        >
+                          bruno@publi.com.br
+                        </Text>
+                      </Box>
+                    </Td>
+                    {isWideVersion && <Td>25 de maio de 2022</Td>}
+                    <Td>
+                      <Button
+                        title="Editar"
+                        as="a"
+                        size="sm"
+                        fontSize="sm"
+                        colorScheme="purple"
+                      >
+                        <Icon as={RiPencilLine} fontSize="16" />
+                      </Button>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+              <Pagination />
+            </>
+          )}
         </Box>
       </Flex>
     </Box>
