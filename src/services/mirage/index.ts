@@ -30,7 +30,7 @@ export function makeServer() {
 
     // gerar dados ao iniciar
     seeds(server) {
-      server.createList("user", 200);
+      server.createList("user", 10);
     },
 
     routes() {
