@@ -16,14 +16,14 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { RiAddLine, RiPencilLine } from "react-icons/ri";
+import { RiAddLine, RiPencilLine, RiRefreshLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { useQuery } from "react-query";
 
 export default function UserList() {
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isFetching, error, refetch } = useQuery(
     "users",
     async () => {
       const response = await fetch("http://localhost:3000/api/users");
@@ -65,17 +65,34 @@ export default function UserList() {
               Usuários
             </Heading>
 
-            <Link href="/users/create" passHref>
+            <Flex gap="4">
               <Button
+                title="Atualizar dados"
                 as="a"
                 size="sm"
                 fontSize="sm"
                 colorScheme="pink"
-                leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                onClick={() => refetch()}
               >
-                Criar novo usuário
+                {!isLoading && isFetching ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <Icon as={RiRefreshLine} fontSize="16" />
+                )}
               </Button>
-            </Link>
+
+              <Link href="/users/create" passHref>
+                <Button
+                  as="a"
+                  size="sm"
+                  fontSize="sm"
+                  colorScheme="pink"
+                  leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+                >
+                  Novo usuário
+                </Button>
+              </Link>
+            </Flex>
           </Flex>
 
           {isLoading ? (
