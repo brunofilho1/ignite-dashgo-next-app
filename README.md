@@ -26,7 +26,7 @@ Clone o projeto e acesse a pasta do mesmo.
 
 ```bash
 $ git clone https://github.com/brunofilho1/ignite-dashgo-next-app
-$ cd minhas-contas
+$ cd ignite-dashgo-next-app
 ```
 
 ## 🚀 Como iniciar a aplicação
